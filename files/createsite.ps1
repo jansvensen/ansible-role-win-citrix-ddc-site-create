@@ -133,28 +133,12 @@ DS_WriteLog "I" "-Grooming days = $GroomingDays" $LogFile
 DS_WriteLog "-" "" $LogFile
 
 # -----------------------------------
-# IMPORT MODULES AND SNAPINS
-# -----------------------------------
-
-# Import the XenDesktop Admin module
-DS_WriteLog "I" "Import the XenDesktop Admin module" $LogFile
-try {
-    Import-Module Citrix.XenDesktop.Admin
-    DS_WriteLog "S" "The XenDesktop Admin module was imported successfully" $LogFile
-} catch {
-    DS_WriteLog "E" "An error occurred trying to import the XenDesktop Admin module (error: $($Error[0]))" $LogFile
-    Exit 1
-}
-
-DS_WriteLog "-" "" $LogFile
-
-# -----------------------------------
 # Load the Citrix snap-ins
 # -----------------------------------
 
 DS_WriteLog "I" "Load the Citrix snap-ins" $LogFile
 try {
-    Add-PSSnapIn citrix.*
+    Add-PSSnapIn citrix*
     DS_WriteLog "S" "The Citrix snap-ins were loaded successfully" $LogFile
 } catch {
     DS_WriteLog "E"  "An error occurred trying to load the Citrix snap-ins (error: $($Error[0]))" $LogFile
