@@ -3,6 +3,11 @@
     ansible.windows.win_powershell:
       script: |
         write-output $(whoami)
+    register: PS_output
+
+  - name: Show PS_output
+    debug:
+      var: PS_output
 
   - name: Create Site
     script: files/createsite.ps1
