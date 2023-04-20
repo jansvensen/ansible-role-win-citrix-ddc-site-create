@@ -14,6 +14,10 @@
       script: |
         Add-PSSnapIn citrix*
         Import-Module citrix*
+
+  - name: Import PS Snapins for Citrix
+    ansible.windows.win_powershell:
+      script: |
         Get-Command *XD*
     register: GC_output
 
