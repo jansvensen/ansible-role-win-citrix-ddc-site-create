@@ -9,6 +9,11 @@
     debug:
       var: PS_output
 
+  - name: Copy a script file
+    win_copy:
+      src: createsfsite.ps1
+      dest: '{{ citrix_installfolder }}'
+      
   - name: Create Site
     script: files/createsite.ps1
     args:
