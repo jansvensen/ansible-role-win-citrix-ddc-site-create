@@ -2,7 +2,7 @@
   - name: Run basic PowerShell script
     ansible.windows.win_powershell:
       script: |
-        whoami
+        write-output $(whoami)
       register: shell_result
 
   - name: Output
