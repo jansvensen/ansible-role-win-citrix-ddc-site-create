@@ -1,4 +1,4 @@
-#==========================================================================
+# -----------------------------------
 #
 # Configure the Citrix XenDeskop Site
 #
@@ -8,15 +8,14 @@
 # Editor: Sven Jansen
 # DATE  : 05.2022
 #
-#==========================================================================
+# -----------------------------------
 
-# define Error handling
-# note: do not change these values
+# Define Error handling; Do not change these values!
 $global:ErrorActionPreference = "Stop"
 if($verbose){ $global:VerbosePreference = "Continue" }
 
+# -----------------------------------
 # FUNCTION DS_WriteLog
-#==========================================================================
 Function DS_WriteLog {
     [CmdletBinding()]
 	Param( 
@@ -34,18 +33,18 @@ Function DS_WriteLog {
         Write-Output ($DateTime + " " + $InformationType + " - " + $Text)
     }
 }
-#==========================================================================
+# -----------------------------------
 
-################
-# Main section #
-################
+# -----------------------------------
+# Main Section
+# -----------------------------------
 
 # Disable File Security
 $env:SEE_MASK_NOZONECHECKS = 1
 
 # Custom variables [edit]
 $BaseLogDir = "C:\Logs"                                         # [edit] add the location of your log directory here
-$PackageName = "Citrix XenDesktop Site (configure)"             # [edit] enter the display name of the software (e.g. 'Arcobat Reader' or 'Microsoft Office')
+$PackageName = "Citrix XenDesktop Site (create)"             # [edit] enter the display name of the software (e.g. 'Arcobat Reader' or 'Microsoft Office')
 
 # Global variables
 $ComputerName = $env:ComputerName
@@ -63,10 +62,9 @@ New-Item $LogFile -ItemType "file" -force | Out-Null
 DS_WriteLog "I" "START SCRIPT - $PackageName" $LogFile
 DS_WriteLog "-" "" $LogFile
 
-#################################################
-# WAIT FOR SQL SERVICE BEING AVAILABLE          #
-#################################################
-
+# -----------------------------------
+# Wait for SQl service
+# -----------------------------------
 DS_WriteLog "I" "Wait for Service MSSQL" $LogFile
 DS_WriteLog "-" "" $LogFile
 
@@ -82,13 +80,13 @@ while($running -ne "true"){
     start-sleep -seconds 5
     $i++
 }
+# -----------------------------------
 
-#################################################
-# INSTALL CITRIX DELIVERY CONTROLLER            #
-#################################################
+# -----------------------------------
+# Install Citrix Delivery Controller
+# -----------------------------------
 
 DS_WriteLog "I" "Create and configure the XenDesktop site" $LogFile
-
 DS_WriteLog "-" "" $LogFile
 
 # Define the variables needed in this script:
@@ -112,9 +110,10 @@ $AdminGroup = $env:AdminGroup
 $Role = $env:Role
 $Scope = $env:Scope
 $GroomingDays = $env:GroomingDays
-# -----------------------------------
 
+# -----------------------------------
 # Log Variables
+# -----------------------------------
 DS_WriteLog "I" "-Site name = $SiteName" $LogFile
 DS_WriteLog "I" "-Database server (+ instance) = $DatabaseServer" $LogFile
 DS_WriteLog "I" "-Database server port = $DatabaseServerPort" $LogFile
@@ -133,8 +132,9 @@ DS_WriteLog "I" "-Grooming days = $GroomingDays" $LogFile
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # IMPORT MODULES AND SNAPINS
-# --------------------------
+# -----------------------------------
 
 # Import the XenDesktop Admin module
 DS_WriteLog "I" "Import the XenDesktop Admin module" $LogFile
@@ -148,7 +148,10 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Load the Citrix snap-ins
+# -----------------------------------
+
 DS_WriteLog "I" "Load the Citrix snap-ins" $LogFile
 try {
     Add-PSSnapIn citrix.*
@@ -160,10 +163,14 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # CREATE DATABASES
-# ----------------
+# -----------------------------------
 
+# -----------------------------------
 # Create the site database (the classical try / catch statement does not work for some reason, so I had to use an "uglier" method for error handling)
+# -----------------------------------
+
 DS_WriteLog "I" "Create the site database" $LogFile
 try {
     New-XDDatabase -AdminAddress $ComputerName -SiteName $SiteName -DataStore Site -DatabaseServer $DatabaseServer -DatabaseName $DatabaseName_Site -ErrorAction Stop | Out-Null
@@ -180,7 +187,10 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Create the logging database
+# -----------------------------------
+
 DS_WriteLog "I" "Create the logging database" $LogFile
 try {
     New-XDDatabase -AdminAddress $ComputerName -SiteName $SiteName -DataStore Logging -DatabaseServer $DatabaseServer -DatabaseName $DatabaseName_Logging -ErrorAction Stop | Out-Null
@@ -197,7 +207,10 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Create the monitoring database
+# -----------------------------------
+
 DS_WriteLog "I" "Create the monitoring database" $LogFile
 try {
     New-XDDatabase -AdminAddress $ComputerName -SiteName $SiteName -DataStore Monitor -DatabaseServer $DatabaseServer -DatabaseName $DatabaseName_Monitoring -ErrorAction Stop | Out-Null
@@ -214,14 +227,15 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
-
+# -----------------------------------
 # CREATE XENDESKTOP SITE
-# ------------------------------
+# -----------------------------------
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Create a new site
-# -----------
+# -----------------------------------
 DS_WriteLog "I" "Create the XenDesktop site '$SiteName'" $LogFile
 try {
     New-XDSite -DatabaseServer $DatabaseServer -LoggingDatabaseName $DatabaseName_Logging -MonitorDatabaseName $DatabaseName_Monitoring -SiteDatabaseName $DatabaseName_Site -SiteName $SiteName -AdminAddress $ComputerName -ErrorAction Stop  | Out-Null
@@ -233,9 +247,13 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # LICENSE SERVER CONFIG
-# ---------------------
+# -----------------------------------
+
+# -----------------------------------
 # Configure license server
+# -----------------------------------
 DS_WriteLog "I" "Configure licensing" $LogFile
 DS_WriteLog "I" "Set the license server" $LogFile
 try {
@@ -248,7 +266,9 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Configure the licensing model, product and edition
+# -----------------------------------
 DS_WriteLog "I" "Configure the licensing model, product and edition" $LogFile
 try {  
     Set-ConfigSite  -AdminAddress $ComputerName -LicensingModel $LicensingModel -ProductCode $ProductCode -ProductEdition $ProductEdition | Out-Null
@@ -260,9 +280,13 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # CREATE ADMINISTRATORS
-# ---------------------
+# -----------------------------------
+
+# -----------------------------------
 # Create a full admin group "CTXAdmins"
+# -----------------------------------
 DS_WriteLog "I" "Create the Citrix administrator $AdminGroup" $LogFile
 try {
     Get-AdminAdministrator $AdminGroup | Out-Null
@@ -277,7 +301,9 @@ try {
     }
 }
 
+# -----------------------------------
 # Assign full admin rights to the admin group "CTXAdmins"
+# -----------------------------------
 DS_WriteLog "I" "Assign full admin rights to the Citrix administrator $AdminGroup" $LogFile
 try {  
     Add-AdminRight -AdminAddress $ComputerName -Administrator $AdminGroup -Role 'Full Administrator' -Scope "All" | Out-Null
@@ -289,9 +315,13 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # ADDITIONAL SITE CONFIGURATIONS
-# ------------------------------
+# -----------------------------------
+
+# -----------------------------------
 # Configure grooming settings
+# -----------------------------------
 DS_WriteLog "I" "Configure grooming settings" $LogFile
 try {  
     Set-MonitorConfiguration -GroomApplicationInstanceRetentionDays $GroomingDays -GroomDeletedRetentionDays $GroomingDays -GroomFailuresRetentionDays $GroomingDays -GroomLoadIndexesRetentionDays $GroomingDays -GroomMachineHotfixLogRetentionDays $GroomingDays -GroomNotificationLogRetentionDays $GroomingDays -GroomResourceUsageDayDataRetentionDays $GroomingDays -GroomSessionsRetentionDays $GroomingDays -GroomSummariesRetentionDays $GroomingDays | Out-Null
@@ -303,7 +333,9 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Enable the Delivery Controller to trust XML requests sent from StoreFront (https://docs.citrix.com/en-us/receiver/windows/4-7/secure-connections/receiver-windows-configure-passthrough.html)
+# -----------------------------------
 DS_WriteLog "I" "Enable the Delivery Controller to trust XML requests sent from StoreFront" $LogFile
 try {  
     Set-BrokerSite -TrustRequestsSentToTheXmlServicePort $true | Out-Null
@@ -315,7 +347,9 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Disable connection leasing (enabled by default in a new site)
+# -----------------------------------
 DS_WriteLog "I" "Disable connection leasing" $LogFile
 try {
     Set-BrokerSite -ConnectionLeasingEnabled $false | Out-Null
@@ -327,7 +361,9 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Enable Local Host Cache (disabled by default in a new site)
+# -----------------------------------
 DS_WriteLog "I" "Enable Local Host Cache" $LogFile
 try {
     Set-BrokerSite -LocalHostCacheEnabled $true | Out-Null
@@ -339,7 +375,9 @@ try {
 
 DS_WriteLog "-" "" $LogFile
 
+# -----------------------------------
 # Disable the Customer Experience Improvement Program (CEIP)
+# -----------------------------------
 DS_WriteLog "I" "Disable the Customer Experience Improvement Program (CEIP)" $LogFile
 try {
     Set-AnalyticsSite -Enabled $false | Out-Null
@@ -349,8 +387,9 @@ try {
     Exit 1
 }
 
-
-# Enable File Security  
+# -----------------------------------
+# Enable File Security
+# -----------------------------------
 Remove-Item env:\SEE_MASK_NOZONECHECKS
 
 DS_WriteLog "-" "" $LogFile
