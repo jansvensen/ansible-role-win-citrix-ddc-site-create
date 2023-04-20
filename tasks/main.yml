@@ -1,4 +1,12 @@
 ---
+  - name: Get Info
+    shell: whoami
+    register: shell_result
+
+  - name: Output
+    debug:
+      var: shell_result.stdout_lines
+
   - name: Create Site
     script: files/createsite.ps1
     args:
