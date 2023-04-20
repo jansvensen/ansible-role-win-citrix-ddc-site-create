@@ -1,7 +1,9 @@
 ---
-  - name: Get Info
-    shell: whoami
-    register: shell_result
+  - name: Run basic PowerShell script
+    ansible.windows.win_powershell:
+      script: |
+        whoami
+      register: shell_result
 
   - name: Output
     debug:
