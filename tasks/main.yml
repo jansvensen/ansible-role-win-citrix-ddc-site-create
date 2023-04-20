@@ -11,7 +11,7 @@
 
   - name: Copy a script file
     win_copy:
-      src: createsfsite.ps1
+      src: createsite.ps1
       dest: '{{ citrix_installfolder }}'
       
   - name: Create Site
