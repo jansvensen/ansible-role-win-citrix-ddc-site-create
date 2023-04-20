@@ -1,19 +1,11 @@
 ---
-  - name: Run basic PowerShell script
-    ansible.windows.win_powershell:
-      script: |
-        write-output $(whoami)
-    register: PS_output
-
-  - name: Show PS_output
-    debug:
-      var: PS_output
-
-  - name: Copy a script file
+  - name: Copy script
     win_copy:
-      src: createsite.ps1
+      src: '{{ item }}'
       dest: '{{ citrix_installfolder }}'
-      
+    with_fileglob:
+      - "*.ps1"
+
   - name: Create Site
     script: files/createsite.ps1
     args:
