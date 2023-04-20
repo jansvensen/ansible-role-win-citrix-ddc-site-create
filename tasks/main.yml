@@ -18,7 +18,7 @@
   - name: Import PS Snapins for Citrix
     ansible.windows.win_powershell:
       script: |
-        Get-Command *XD*
+        Get-Command *XDD*
     register: GC_output
 
   - name: Output Snapins and Modules
