@@ -1,2 +1,2 @@
 ---
-# vars file for citrix-site-create
+# vars file for ansible-role-win-citrix-ddc-site-create
