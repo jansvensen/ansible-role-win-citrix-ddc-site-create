@@ -145,6 +145,19 @@ try {
     Exit 1
 }
 
+# -----------------------------------
+# Load the Citrix modules
+# -----------------------------------
+
+DS_WriteLog "I" "Load the Citrix snap-ins" $LogFile
+try {
+    Import-Module citrix*
+    DS_WriteLog "S" "The Citrix modules were loaded successfully" $LogFile
+} catch {
+    DS_WriteLog "E"  "An error occurred trying to load the Citrix modules (error: $($Error[0]))" $LogFile
+    Exit 1
+}
+
 DS_WriteLog "-" "" $LogFile
 
 # -----------------------------------
