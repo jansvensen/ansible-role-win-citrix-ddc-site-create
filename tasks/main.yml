@@ -22,4 +22,4 @@
     register: GC_output
 
   - name: Output Snapins and Modules
-    debug: "msg=The script's stdout was `{{ GC_output.stdout }}`."
+    debug: "msg=The scripts stdout was '{{ GC_output.stdout }}'."
