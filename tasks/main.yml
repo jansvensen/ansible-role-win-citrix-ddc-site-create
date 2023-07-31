@@ -9,7 +9,7 @@
   - name: Create Site
     script: files/createsite.ps1
     args:
-      creates: '{{ citrix_logfolder }}\sitedone.txt'
+      creates: '{{ directory_logging }}\sitedone.txt'
     environment:
       SiteName: "{{ citrix_site_SiteName }}"
       DatabaseServer: "{{ citrix_site_DatabaseServer }}"

@@ -43,7 +43,7 @@ Function DS_WriteLog {
 $env:SEE_MASK_NOZONECHECKS = 1
 
 # Custom variables [edit]
-$BaseLogDir = "C:\Logs"                                         # [edit] add the location of your log directory here
+$BaseLogDir = "{{ directory_logging }}s"                                         # [edit] add the location of your log directory here
 $PackageName = "Citrix XenDesktop Site (create)"             # [edit] enter the display name of the software (e.g. 'Arcobat Reader' or 'Microsoft Office')
 
 # Global variables
@@ -392,4 +392,4 @@ Remove-Item env:\SEE_MASK_NOZONECHECKS
 DS_WriteLog "-" "" $LogFile
 DS_WriteLog "I" "End of script" $LogFile
 
-"complete"  >> c:\logs\sitedone.txt
+"complete"  >> {{ directory_logging }}sitedone.txt
