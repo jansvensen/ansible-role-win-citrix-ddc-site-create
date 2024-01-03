@@ -1,28 +1,27 @@
 ---
-  - name: Copy script
-    win_copy:
-      src: '{{ item }}'
-      dest: '{{ citrix_installfolder }}'
-    with_fileglob:
-      - "*.ps1"
+- name: Create Citrix Site
+  citrix_site:
+    name: "{{ citrix.site }}"
+    db_server: "{{ citrix_site_DatabaseServer }}"
+    db_port: "{{ citrix_site_DatabaseServerPort }}"
+    admin_group: "{{ citrix_site_AdminGroup }}"
+    state: present
+  vars:
+    ansible_become: true
+    ansible_become_method: runas
+    ansible_become_user: "{{ ansible_user }}"
+    ansible_become_password: "{{ ansible_password }}"
 
-  - name: Create Site
-    script: files/createsite.ps1
-    args:
-      creates: '{{ directory_logging }}\sitedone.txt'
-    environment:
-      SiteName: "{{ citrix_site_SiteName }}"
-      DatabaseServer: "{{ citrix_site_DatabaseServer }}"
-      DatabaseServerPort: "{{ citrix_site_DatabaseServerPort }}"
-      DatabaseName_Site: "{{ citrix_site_DatabaseName_Site }}"
-      DatabaseName_Logging: "{{ citrix_site_DatabaseName_Logging }}"
-      DatabaseName_Monitoring: "{{ citrix_site_DatabaseName_Monitoring }}"
-      LicenseServer: "{{ citrix_site_LicenseServer }}"
-      LicenseServerPort: "{{ citrix_site_LicenseServerPort }}"
-      LicensingModel: "{{ citrix_site_LicensingModel }}"                  
-      ProductCode: "{{ citrix_site_ProductCode }}"                                   
-      ProductEdition: "{{ citrix_site_ProductEdition }}"
-      AdminGroup: "{{ citrix_site_AdminGroup }}"
-      Role:  "{{ citrix_site_Role }}"
-      Scope: "{{ citrix_site_Scope }}"                                 
-      GroomingDays: "{{ citrix_site_GroomingDays }}"
+- name: Set the Citrix License Server
+  citrix_license:
+    lic_server: "{{ citrix_site_LicenseServer }}"
+    lic_port: "{{ citrix_site_LicenseServerPort }}"
+    lic_model: "{{ citrix_site_LicensingModel }}"  
+    lic_product_code: "{{ citrix_site_ProductCode }}"    
+    lic_product_edition: "{{ citrix_site_ProductEdition }}"
+    state: present
+  vars:
+    ansible_become: true
+    ansible_become_method: runas
+    ansible_become_user: "{{ ansible_user }}"
+    ansible_become_password: "{{ ansible_password }}"
