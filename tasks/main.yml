@@ -1,7 +1,7 @@
 ---
 - name: Create Citrix Site
   citrix_site:
-    name: "{{ citrix.site }}"
+    name: "{{ citrix.site.name }}"
     db_server: "{{ citrix_site_DatabaseServer }}"
     db_port: "{{ citrix_site_DatabaseServerPort }}"
     admin_group: "{{ citrix_site_AdminGroup }}"
