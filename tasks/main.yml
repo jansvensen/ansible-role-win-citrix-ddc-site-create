@@ -4,7 +4,7 @@
     args:
       creates: '{{ directory_logging }}\sitedone.txt'
     environment:
-      SiteName: "{{ citrix.site.SiteName }}"
+      SiteName: "{{ citrix.site.Name }}"
       DatabaseServer: "{{ citrix.site.database.Server }}"
       DatabaseServerPort: "{{ citrix.site.database.ServerPort }}"
       DatabaseName_Site: "{{ citrix.site.database.Name_Site }}"
