@@ -1,11 +1,4 @@
 ---
-  - name: Copy script
-    win_copy:
-      src: '{{ item }}'
-      dest: '{{ citrix_installfolder }}'
-    with_fileglob:
-      - "*.ps1"
-
   - name: Create Site
     script: files/createsite.ps1
     args:
