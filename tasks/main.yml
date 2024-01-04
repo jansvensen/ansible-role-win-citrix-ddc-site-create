@@ -4,13 +4,13 @@
     args:
       creates: '{{ directory_logging }}\sitedone.txt'
     environment:
-      SiteName: "{{ citrix.site.Name }}"
-      DatabaseServer: "{{ citrix.site.database.Server }}"
-      DatabaseServerPort: "{{ citrix.site.database.Port }}"
-      DatabaseName_Site: "{{ citrix.site.database.Name_Site }}"
-      DatabaseName_Logging: "{{ citrix.site.database.Name_Logging }}"
-      DatabaseName_Monitoring: "{{ citrix.site.database.Name_Monitoring }}"
-      LicenseServer: "{{ citrix.site.licensing.Server }}"
+      SiteName: "{{ citrix.site.name }}"
+      DatabaseServer: "{{ citrix.site.database.server }}"
+      DatabaseServerPort: "{{ citrix.site.database.port }}"
+      DatabaseName_Site: "{{ citrix.site.database.name_site }}"
+      DatabaseName_Logging: "{{ citrix.site.database.name_logging }}"
+      DatabaseName_Monitoring: "{{ citrix.site.database.name_monitoring }}"
+      LicenseServer: "{{ citrix.site.licensing.server }}"
       LicenseServerPort: "{{ citrix.site.licensing.Port }}"
       LicensingModel: "{{ citrix.site.licensing.Model }}"                  
       ProductCode: "{{ citrix.site.licensing.Code }}"                                   
