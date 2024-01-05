@@ -1,15 +1,8 @@
 ---
-  - name: Copy script
-    win_copy:
-      src: '{{ item }}'
-      dest: '{{ citrix_installfolder }}'
-    with_fileglob:
-      - "*.ps1"
-
   - name: Create Site
     script: files/createsite.ps1
     args:
-      creates: '{{ directory_logging }}\sitedone.txt'
+      creates: '{{ win_directory_logging }}\sitedone.txt'
     environment:
       SiteName: "{{ citrix_site_SiteName }}"
       DatabaseServer: "{{ citrix_site_DatabaseServer }}"
