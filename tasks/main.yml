@@ -18,4 +18,4 @@
       AdminGroup: "{{ citrix.site.admin.group }}"
       Role:  "{{ citrix.site.admin.role }}"
       Scope: "{{ citrix.site.admin.scope }}"                                 
-      GroomingDays: "{{ citrix.site.admin.groomimg }}"
+      GroomingDays: "{{ citrix.site.admin.grooming }}"
